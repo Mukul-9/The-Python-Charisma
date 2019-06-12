@@ -1,0 +1,111 @@
+#NOTE:
+#This code won't run here in github
+#https://py3.codeskulptor.org/
+#Go to the link mentioned above and copy paste this code in order to run it 
+#Because GUI is not supported here in GitHub interface
+
+
+import random
+import simplegui
+
+
+Computer_Score = 0
+Human_Score = 0
+Human_Choice = ""
+Computer_Choice = ""
+
+
+def choice_to_number(choice):
+    return {'rock' : 0, 'paper' : 1, 'scissors' : 2} [choice]
+
+
+def number_to_choice(number):
+    return { 0 : 'rock', 1 : 'paper', 2 : 'scissors'} [number]
+
+
+def random_computer():
+    import random
+    Computer_Choice = random.choice(['rock', 'paper', 'scissors'])
+    return(Computer_Choice)
+    
+def Result(Human_Choice, Computer_Choice):
+    global Computer_Score
+    global Human_Score
+    
+    Human_Number = choice_to_number(Human_Choice)
+    Computer_Number = choice_to_number(Computer_Choice)
+    
+    if (Human_Number - Computer_Number)%3==1:
+        Computer_Score = Computer_Score+1
+    elif Human_Number == Computer_Number:
+        pass
+    else:
+        Human_Score = Human_Score+1
+def test_choice_to_number():
+    assert choice_to_number('rock') == 0
+    assert choice_to_number('paper') == 1
+    assert choice_to_number('scissors') == 2
+    
+def test_number_to_choice():
+    assert number_to_choice(0) == 'rock'
+    assert number_to_choice(1) == 'paper'
+    assert number_to_choice(2) == 'scissors'
+    
+def test_all():
+    test_choice_to_number()
+    test_number_to_choice()
+
+test_all()
+
+
+
+# This portion is for the GUI part of the game.
+def rock():
+    global Human_Choice, Computer_Choice
+    global Human_Score, Computer_Score
+    
+    Human_Choice = 'rock'
+    Computer_Choice = random_computer()
+    Result(Computer_Choice, Human_Choice)
+
+def paper():
+    global Human_Choice, Computer_Choice
+    global Human_Score, Computer_Score
+    
+    Human_Choice = 'paper'
+    Computer_Choice = random_computer()
+    Result(Computer_Choice, Human_Choice)
+    
+def scissors():
+    global Human_Choice, Computer_Choice
+    global Human_Score, Computer_Score
+    
+    Human_Choice = 'scissors'
+    Computer_Choice = random_computer()
+    Result(Computer_Choice, Human_Choice)
+
+# Now we'll draw an interactive console on canvas
+def draw(canvas):
+    
+    try:
+        canvas.draw_text("User: " + Human_Choice, [10,40], 30, "Blue")
+        canvas.draw_text("Computer: " + Computer_Choice, [10,80], 30, "Red")
+        
+        canvas.draw_text("User's Score: " + str(Human_Score), [10,150], 30, "Blue")
+        canvas.draw_text("Computer's Score: " + str(Computer_Score), [10,190], 30, "Red")
+        
+    except TypeError:
+        pass
+    
+def lets_play():
+    frame = simplegui.create_frame("GAME'S ON!",300, 200)
+    frame.set_canvas_background("White")
+    frame.add_button("Rock", rock)
+    frame.add_button("Paper", paper)
+    frame.add_button("Scissors", scissors)
+    frame.set_draw_handler(draw)
+
+    # Start the frame animation
+    frame.start()
+ 
+lets_play()
